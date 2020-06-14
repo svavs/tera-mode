@@ -1,9 +1,6 @@
 {% for item in array %} 
-   {{ forloop.length  }}
    {{ forloop.index   }}
    {{ forloop.index0  }} 
-   {{ forloop.rindex  }}
-   {{ forloop.rindex0 }}	
    {{ forloop.first   }}
    {{ forloop.last    }}
 {% endfor %} 
