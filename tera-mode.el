@@ -62,8 +62,9 @@
 
 
 	      ;;; core stuff
-        ("{%\\|%}\\|{{\\|}}|{%-\\-%}|[\\]" . font-lock-comment-face) ;;; delimiters
-        ("{#\\#}" . font-lock-comment-delimiter-face) ;;; comments delimiter
+        ("{%\\|%}\\|{{\\|}}\\|{%-\\|-%}\\|[\\|]\\|{#\\|#}\\" . font-lock-comment-face) ;;; delimiters
+        ("{#\\|#}\\" . font-lock-comment-delimiter-face) ;;; comments delimiter
+        ("{#\s*" (font-lock-keyword-face)) ;;; filter sections
         ("\\~\\" . font-lock-keyword-face) ;;; string concatenation
         ("{%\s*\\(in\\|not in\\)" (1 font-lock-keyword-face)) ;;; in checking
         ("\\and\\|\\or\\|\\not\\" . font-lock-keyword-face) ;;; logic
@@ -92,7 +93,7 @@
 
 (define-derived-mode tera-mode html-mode
   (setq font-lock-defaults '(teraKeywords))
-  (setq mode-name "tera mode")
+  (setq mode-name "Tera")
   )
 (add-to-list 'auto-mode-alist '("\\.tera$" . tera-mode))
 (provide 'tera-mode)

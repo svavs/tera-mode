@@ -1,0 +1,6 @@
+{#  ==: checks whether the values are equal #}
+{#    !=: checks whether the values are different #}
+{#    >=: true if the left value is equal or greater to the right one #}
+{#    <=: true if the right value is equal or greater to the left one #}
+{#    >: true if the left value is greater than the right one #}
+{#    <: true if the right value is greater than the left one #}

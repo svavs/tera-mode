@@ -1,0 +1,19 @@
+{# You can assign values to variables during the rendering. Assignments in for loops and macros are scoped to their context but assignments outside of those will be set in the global context. #}
+
+{% set my_var = "hello" %}
+{% set my_var = 1 + 4 %}
+{% set my_var = some_var %}
+{% set my_var = macros::some_macro() %}
+{% set my_var = global_fn() %}
+{% set my_var = [1, true, some_var | round] %}
+
+{# If you want to assign a value in the global context while in a for loop, you can use set_global: #}
+
+{% set_global my_var = "hello" %}
+{% set_global my_var = 1 + 4 %}
+{% set_global my_var = some_var %}
+{% set_global my_var = macros::some_macro() %}
+{% set_global my_var = global_fn() %}
+{% set_global my_var = [1, true, some_var | round] %}
+
+{# Outside of a for loop, set_global is exactly the same as set. #}

@@ -1,0 +1,87 @@
+{# Tests can be used against an expression to check some condition on it and are made in if blocks using the is keyword. For example, you would write the following to test if an expression is odd: #}
+
+{% if my_number is odd %}
+ Odd
+{% endif %}
+
+{# Tests can also be negated: #}
+
+{% if my_number is not odd %}
+ Even
+{% endif %}
+
+{# Tera has many built-in tests that you can use. #}
+
+
+{# Here are the currently built-in tests: #}
+
+{# -- defined -- #}
+Returns true if the given variable is defined.
+
+{# -- undefined -- #}
+Returns true if the given variable is undefined.
+
+{# -- odd -- #}
+Returns true if the given variable is an odd number.
+
+{# -- even -- #}
+Returns true if the given variable is an even number.
+
+{# -- string -- #}
+Returns true if the given variable is a string.
+
+{# -- number -- #}
+Returns true if the given variable is a number.
+
+{# -- divisibleby -- #}
+Returns true if the given expression is divisible by the arg given.
+Example:
+
+{% if rating is divisibleby(2) %}
+    Divisible
+{% endif %}
+
+{# -- iterable -- #}
+Returns true if the given variable can be iterated over in Tera (ie is an array/tuple or an object).
+
+{# -- object -- #}
+Returns true if the given variable is an object (ie can be iterated over key, value).
+
+{# -- starting_with -- #}
+Returns true if the given variable is a string starts with the arg given.
+Example:
+
+{% if path is starting_with("x/") %}
+    In section x
+{% endif %}
+
+{# -- ending_with -- #}
+Returns true if the given variable is a string ends with the arg given.
+
+{# -- containing -- #}
+Returns true if the given variable contains the arg given.
+The test works on:
+
+    strings: is the arg a substring?
+    arrays: is the arg given one of the member of the array?
+    maps: is the arg given a key of the map?
+
+Example:
+
+{% if username is containing("xXx") %}
+    Bad
+{% endif %}
+
+{# -- matching -- #}
+Returns true if the given variable is a string and matches the regex in the argument.
+Example:
+
+{% if name is matching("^[Qq]ueen") %}
+    Her Royal Highness, {{ name }}
+{% elif name is matching("^[Kk]ing") %}
+    His Royal Highness, {{ name }}
+{% else %}
+    {{ name }}
+{% endif %}
+
+A comprehensive syntax description can be found in the regex crate documentation.

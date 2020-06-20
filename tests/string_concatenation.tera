@@ -1,0 +1,9 @@
+{# You can concatenate several strings/idents using the ~ operator. #}
+
+{{ "hello " ~ 'world' ~ `!` }}
+
+{{ an_ident ~ " and a string" ~ another_ident }}
+
+{{ an_ident ~ another_ident }}
+
+{# An ident resolving to something other than a string will raise an error. #}

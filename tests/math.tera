@@ -1,0 +1,11 @@
+{# You can do some basic math in Tera but it shouldn't be abused other than the occasional + 1 or similar. Math operations are only allowed with numbers, using them on any other kind of values will result in an error. You can use the following operators: #}
+
+    +: adds 2 values together, {{ 1 + 1 }} will print 2
+    -: performs a substraction, {{ 2 - 1 }} will print 1
+    /: performs a division, {{ 10 / 2 }} will print 5
+    *: performs a multiplication, {{ 5 * 2 }} will print 10
+    %: performs a modulo, {{ 2 % 2 }} will print 0
+
+{# The priority of operations is the following, from lowest to highest: #}
+{#    + and - #}
+{#    * and / and % #}

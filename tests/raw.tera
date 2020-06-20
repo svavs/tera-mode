@@ -1,0 +1,6 @@
+{# Tera will consider all text inside the raw block as a string and won't try to render what's inside.
+   Useful if you have text that contains Tera delimiters. #}
+   
+{% raw %}
+  Hello {{ name }}
+{% endraw %}

@@ -1,0 +1,60 @@
+{# Loop over items in a array: #}
+
+{% for product in products %}
+  {{loop.index}}. {{product.name}}
+{% endfor %}
+
+{# A few special variables are available inside for loops: #}
+
+{#    loop.index: current iteration 1-indexed #}
+{#    loop.index0: current iteration 0-indexed #}
+{#    loop.first: whether this is the first iteration #}
+{#    loop.last: whether this is the last iteration #}
+
+{# Every for statement has to end with an endfor tag. #}
+
+{# You can also loop on maps and structs using the following syntax: #}
+
+{% for key, value in products %}
+  {{loop.index}}. {{product.name}}
+{% endfor %}
+
+{# key and value can be named however you want, they just need to be separated with a comma. #}
+
+{# If you are iterating on an array, you can also apply filters to the container: #}
+
+{% for product in products | reverse %}
+  {{loop.index}}. {{product.name}}
+{% endfor %}
+
+{# You can also iterate on array literals: #}
+
+{% for a in [1,2,3,] %}
+  {{a}}
+{% endfor %}
+
+{# Lastly, you can set a default body to be rendered when the container is empty: #}
+
+{% for product in products %}
+  {{loop.index}}. {{product.name}}
+{% else %}
+  No products.  
+{% endfor %}
+
+{# --- Loop Controls --- #}
+
+{# Within a loop, break and continue may be used to control iteration. #}
+
+{# To stop iterating when target_id is reached: #}
+
+{% for product in products %}
+  {% if product.id == target_id %}{% break %}{% endif %}
+  {{loop.index}}. {{product.name}}
+{% endfor %}
+
+{# To skip even-numbered items: #}
+
+{% for product in products %}
+  {% if loop.index is even %}{% continue %}{% endif %}
+  {{loop.index}}. {{product.name}}
+{% endfor %}

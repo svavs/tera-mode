@@ -1,0 +1,336 @@
+{# You can modify variables using filters. Filters are separated from the variable by a pipe symbol (|) and may have named arguments in parentheses. Multiple filters can be chained: the output of one filter is applied to the next. #}
+
+{# For example, {{ name | lower | replace(from="doctor", to="Dr.") }} will take a variable called name, make it lowercase and then replace instances of doctor by Dr.. It is equivalent to replace(lower(name), from="doctor", to="Dr.") if we were to look at it as functions. #}
+
+{# Calling filters on a incorrect type like trying to capitalize an array or using invalid types for arguments will result in a error. #}
+
+
+{# While filters can be used in math operations, they will have the lowest priority and therefore might not do what you expect: #}
+
+{{ 1 + a | length }}
+// is equal to
+{{ (1 + a) | length } // this will probably error
+
+// This will do what you wanted initially
+{{ a | length + 1 }}
+
+{# Tera has many built-in filters that you can use. #}
+
+
+{# ============= #}
+
+{# Whole sections can also be processed by filters if they are encapsulated in {% filter name %} and {% endfilter %} tags where name is the name of the filter: #}
+
+{% filter upper %}
+    Hello
+{% endfilter %}
+
+{# This example transforms the text Hello in all upper-case (HELLO). #}
+
+{# Filter sections can also contain block sections like this: #}
+
+{% filter upper %}
+  {% block content_to_be_upper_cased %}
+    This will be upper-cased
+  {% endblock content_to_be_upper_cased %} 
+{% endfilter %}
+
+
+{# ================ #}
+
+
+
+
+
+{# Tera has the following filters built-in: #}
+{# -- lower -- #}
+{# Lowercase a string #}
+
+{# -- wordcount -- #}
+{# Returns number of words in a string #}
+
+{# -- capitalize -- #}
+{# Returns the string with all its character lowercased apart from the first char which is uppercased. #}
+
+{# -- replace -- #}
+{# Takes 2 mandatory string named arguments: from and to. It will return a string with all instances of the from string with the to string. #}
+{# Example: #}
+{{ name | replace(from="Robert", to="Bob")}}
+
+{# -- addslashes -- #}
+{# Adds slashes before quotes. #}
+{# Example: #}
+{{ value | addslashes }}
+{# If value is "I'm using Tera", the output will be "I\'m using Tera". #}
+
+{# -- slugify -- #}
+{# Only available if the builtins feature is enabled. #}
+{# Transform a string into ASCII, lowercase it, trim it, converts spaces to hyphens and remove all characters that are not numbers, lowercase letters or hyphens. #}
+{# Example: #}
+{{ value | slugify }}
+{# If value is "-Hello world! ", the output will be "hello-world". #}
+
+{# -- title -- #}
+{# Capitalizes each word inside a sentence. #}
+{# Example: #}
+{{ value | title }}
+{# If value is "foo bar", the output will be "Foo Bar". #}
+
+{# -- trim -- #}
+{# Remove leading and trailing whitespace if the variable is a string. #}
+
+{# -- trim_start -- #}
+{# Remove leading whitespace if the variable is a string. #}
+
+{# -- trim_end -- #}
+{# Remove trailing whitespace if the variable is a string. #}
+
+{# -- trim_start_matches -- #}
+{# Remove leading characters that match the given pattern if the variable is a string. #}
+{# Example: #}
+{{ value | trim_start_matches(pat="//") }}
+{# If value is "//a/b/c//", the output will be "a/b/c//". #}
+
+{# -- trim_end_matches -- #}
+{# Remove trailing characters that match the given pattern if the variable is a string. #}
+{# Example: #}
+{{ value | trim_end_matches(pat="//") }}
+{# If value is "//a/b/c//", the output will be "//a/b/c". #}
+
+{# -- truncate -- #}
+{# Only available if the builtins feature is enabled. #}
+{# Truncates a string to the indicated length. If the string has a smaller length than the length argument, the string is returned as is. #}
+{# Example: #}
+{{ value | truncate(length=10) }}
+{# By default, the filter will add an ellipsis at the end if the text was truncated. You can change the string appended by setting the end argument. #}
+{# For example, #}{{ value | truncate(length=10, end="") }}{# will not append anything. #}
+
+{# -- striptags -- #}
+{# Tries to remove HTML tags from input. Does not guarantee well formed output if input is not valid HTML. #}
+Example: {{ value | striptags}}
+{# If value is "<b>Joel</b>", the output will be "Joel". #}
+{# Note that if the template you using it in is automatically escaped, you will need to call the safe filter before striptags. #}
+
+{# -- first -- #}
+{# Returns the first element of an array. If the array is empty, returns empty string. #}
+
+{# -- last -- #}
+{# Returns the last element of an array. If the array is empty, returns empty string. #}
+
+{# -- nth -- #}
+{# Returns the nth element of an array.§ If the array is empty, returns empty string. It takes a required n argument, corresponding to the 0-based index you want to get. #}
+Example: {{ value | nth(n=2) }}
+
+{# -- join -- #}
+{# Joins an array with a string. #}
+Example: {{ value | join(sep=" // ") }}
+{# If value is the array ['a', 'b', 'c'], the output will be the string "a // b // c". #}
+
+{# -- length -- #}
+{# Returns the length of an array, an object, or a string. #}
+
+{# -- reverse -- #}
+{# Returns a reversed string or array. #}
+
+{# -- sort -- #}
+{# Sorts an array into ascending order. #}
+{# The values in the array must be a sortable type: #}
+{#    numbers are sorted by their numerical value. #}
+{#    strings are sorted in alphabetical order. #}
+{#    arrays are sorted by their length. #}
+{#    bools are sorted as if false=0 and true=1 #}
+{# If you need to sort a list of structs or tuples, use the attribute argument to specify which field to sort by. #}
+{# Example: #}
+{# Given people is an array of Person #}
+{#
+struct Name(String, String);
+
+struct Person {
+    name: Name,
+    age: u32,
+}
+#}
+{# The attribute argument can be used to sort by last name: #}
+{{ people | sort(attribute="name.1") }}
+{# or by age: #}
+{{ people | sort(attribute="age") }}
+
+{# -- unique -- #}
+{# Removes duplicate items from an array. The attribute argument can be used to select items based on the values of an inner attribute. For strings, the case_sensitive argument (default is false) can be used to control the comparison. #}
+{# Example: #}
+{# Given people is an array of Person #}
+{# 
+struct Name(String, String);
+
+struct Person {
+    name: Name,
+    age: u32,
+}
+#}
+{# The attribute argument can be used to select one Person for each age: #}
+{{ people | unique(attribute="age") }}
+{# or by last name: #}
+{{ people | unique(attribute="name.1", case_sensitive="true") }}
+
+{# -- slice -- #}
+{# Slice an array by the given start and end parameter. Both parameters are optional and omitting them will return the same array. Use the start argument to define where to start (inclusive, default to 0) and end argument to define where to stop (exclusive, default to the length of the array). start and end are 0-indexed. #}
+{% for i in my_arr | slice(end=5) %}
+{% for i in my_arr | slice(start=1) %}
+{% for i in my_arr | slice(start=1, end=5) %}
+
+{# -- group_by -- #}
+{# Group an array using the required attribute argument. The filter takes an array and return a map where the keys are the values of the attribute stringified and the values are all elements of the initial array having that attribute. Values with missing attribute or where attribute is null will be discarded. #}
+{# Example: #}
+{# Given posts is an array of Post #}
+{#
+struct Author {
+    name: String,
+};
+
+struct Post {
+    content: String,
+    year: u32,
+    author: Author,
+}
+#}
+{# The attribute argument can be used to group posts by year: #}
+{{ posts | group_by(attribute="year") }}
+{# or by author name: #}
+{{ posts | group_by(attribute="author.name") }}
+
+{# -- filter -- #}
+{# Filter the array values, returning only the values where the attribute is equal to the value. Values with missing attribute or where attribute is null will be discarded. #}
+{# attribute is mandatory. #}
+{# Example: #}
+{# Given posts is an array of Post #}
+{#
+struct Author {
+    name: String,
+};
+
+struct Post {
+    content: String,
+    year: u32,
+    author: Author,
+    draft: bool,
+}
+#}
+{# The attribute argument can be used to filter posts by draft value: #}
+{{ posts | filter(attribute="draft", value=true) }}
+{# or by author name: #}
+{{ posts | filter(attribute="author.name", value="Vincent") }}
+{# If value is not passed, it will drop any elements where the attribute is null. #}
+
+{# -- map -- #}
+{# Retrieves an attribute from each object in an array. The attribute argument is mandatory and specifies what to extract. #}
+{# Example: #}
+{# Given people is an array of Person #}
+{#
+struct Name(String, String);
+
+struct Person {
+    name: Name,
+    age: u32,
+}
+#}
+{# The attribute argument is used to retrieve their ages. #}
+{{ people | map(attribute="age") }}
+
+{# -- concat -- #}
+{# Appends values to an array. #}
+{{ posts | concat(with=drafts) }}
+{# The filter takes an array and returns a new array with the value(s) from the with parameter added. If the with parameter is an array, all of its values will be appended one by one to the new array and not as an array. #}
+{# This filter can also be used to append a single value to an array if the value passed to with is not an array: #}
+{% set pages_id = pages_id | concat(with=id) %}
+{# The with attribute is mandatory. #}
+
+{# -- urlencode -- #}
+{# Only available if the builtins feature is enabled. #}
+{# Percent-encodes all the characters in a string which are not included in unreserved chars(according to RFC3986) with the exception of forward slash(/). #}
+{# Example: #}{{ value | urlencode }}
+{# If value is /foo?a=b&c=d, the output will be /foo%3Fa%3Db%26c%3Dd. / is not escaped. #}
+
+{# -- urlencode_strict -- #}
+{# Only available if the builtins feature is enabled. #}
+{# Similar to urlencode filter but encodes all non-alphanumeric characters in a string including forward slashes (/). #}
+Example: {{ value | urlencode_strict }}
+{# If value is /foo?a=b&c=d, the output will be %2Ffoo%3Fa%3Db%26c%3Dd. / is also encoded. #}
+
+{# -- pluralize -- #}
+{# Returns a plural suffix if the value is not equal to ±1, or a singular suffix otherwise. The plural suffix defaults to s and the singular suffix defaults to the empty string (i.e nothing). #}
+Example: You have {{ num_messages }} message{{ num_messages | pluralize }}
+{# If num_messages is 1, the output will be You have 1 message. If num_messages is 2 the output will be You have 2 messages. You can also customize the singular and plural suffixes with the singular and plural arguments to the filter: #}
+Example: {{ num_categories }} categor{{ num_categories | pluralize(singular="y", plural="ies") }}
+
+{# -- round -- #}
+{# Returns a number rounded following the method given. Default method is common which will round to the nearest integer. ceil and floor are available as alternative methods. Another optional argument, precision, is available to select the precision of the rounding. It defaults to 0, which will round to the nearest integer for the given method. #}
+Example: {{ num | round }} {{ num | round(method="ceil", precision=2) }}
+
+{# -- filesizeformat -- #}
+{# Only available if the builtins feature is enabled. #}
+{# Returns a human-readable file size (i.e. '110 MB') from an integer. #}
+Example: {{ num | filesizeformat }}
+
+{# -- date -- #}
+{# Only available if the builtins feature is enabled. #}
+{# Parse a timestamp into a date(time) string. Defaults to YYYY-MM-DD format. Time formatting syntax is inspired from strftime and a full reference is available on chrono docs. #}
+Example: {{ ts | date }} {{ ts | date(format="%Y-%m-%d %H:%M") }}
+{# If you are using ISO 8601 date strings you can optionally supply a timezone for the date to be rendered in. #}
+Example:
+{{ "2019-09-19T13:18:48.731Z" | date(timezone="America/New_York") }}
+{{ "2019-09-19T13:18:48.731Z" | date(format="%Y-%m-%d %H:%M", timezone="Asia/Shanghai") }}
+
+{# -- escape -- #}
+{# Escapes a string's HTML. Specifically, it makes these replacements: #}
+{#    & is converted to &amp; #}
+{#    < is converted to &lt; #}
+{#    > is converted to &gt; #}
+{#    " (double quote) is converted to &quot; #}
+{#    ' (single quote) is converted to &#x27; #}
+{#    / is converted to &#x2F; #}
+
+{# -- escape_xml -- #}
+{# Escapes XML special characters. Specifically, it makes these replacements: #}
+{#    & is converted to &amp; #}
+{#    < is converted to &lt; #}
+{#    > is converted to &gt; #}
+{#    " (double quote) is converted to &quot; #}
+{#    ' (single quote) is converted to &apos; #}
+
+{# -- safe -- #}
+{# Mark a variable as safe: HTML will not be escaped anymore. safe only works if it is the last filter of the expression: #}
+    {{ content | replace(from="Robert", to="Bob") | safe }} will not be escaped
+    {{ content | safe | replace(from="Robert", to="Bob") }} will be escaped
+
+{# -- get -- #}
+    {# Access a value from an object when the key is not a Tera identifier. #}
+    Example: {{ sections | get(key="posts/content") }}
+
+{# -- split -- #}
+    {# Split a string into an array of strings, separated by a pattern given. #}
+    Example: {{ path | split(pat="/") }}
+
+{# -- int -- #}
+{# Converts a value into an integer. The default argument can be used to specify the value to return on error, and the base argument can be used to specify how to interpret the number. Bases of 2, 8, and 16 understand the prefix 0b, 0o, 0x, respectively. #}
+
+{# -- float -- #}
+{# Converts a value into a float. The default argument can be used to specify the value to return on error. #}
+
+{# -- json_encode -- #}
+{# Transforms any value into a JSON representation. This filter is better used together with safe or when automatic escape is disabled. #}
+Example: {{ value | json_encode() | safe }}
+{# It accepts a parameter pretty (boolean) to print a formatted JSON instead of a one-liner. #}
+Example: {{ value | json_encode(pretty=true) | safe }}
+
+{# -- as_str -- #}
+{# Returns a string representation of the given value. #}
+Example: {{ value | as_str }}
+
+{# -- default -- #}
+{# Returns the default value given only if the variable evaluated is not present in the context and is therefore meant to be at the beginning of a filter chain if there are several filters. #}
+Example: {{ value | default(value=1) }}
+{# This is in most cases a shortcut for: #}
+{% if value %}{{ value }}{% else %}1{% endif %}
+{# However, only the existence of the value in the context is checked. With a value that if would evaluate to false (such as an empty string, or the number 0), the default filter will not attempt replace it with the alternate value provided. For example, the following will produce "I would like to read more !": #}
+I would like to read more {{ "" | default (value="Louise Michel") }}!
+{# If you intend to use the default filter to deal with optional values, you should make sure those values aren't set! Otherwise, use a full if block. This is especially relevant for dealing with optional arguments passed to a macro. #}

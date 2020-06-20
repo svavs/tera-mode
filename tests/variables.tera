@@ -1,0 +1,21 @@
+{# Variables are defined by the context given when rendering a template. If you'd like to define your own variables, see the Assignments section. #}
+
+You can render a variable by using the {{ name }}.
+
+{# Trying to access or render a variable that doesn't exist will result in an error. #}
+
+{# A magical variable is available in every template if you want to print the current context: __tera_context. #}
+
+
+{# Dot notation: #}
+Construct and attributes can be accessed by using the dot (.) like {{ product.name }}.
+Specific members of an array or tuple are accessed by using the .i notation, where i is a zero-based index.
+
+{# Square bracket notation: #}
+A more powerful alternative to (.) is to use square brackets ([ ]).
+Variables can be rendering using the notation {{product['name']}} or {{product["name"]}}.
+
+{# If the item is not in quotes it will be treated as a variable. #}
+{# Assuming you have the following objects in your context product = Product{ name: "Fred" } and my_field = "name", calling {{product[my_field]}} will resolve to: {{product.name}}. #}
+
+{# Only variables evaluating to String and Number can be used as index: anything else will be an error. #}

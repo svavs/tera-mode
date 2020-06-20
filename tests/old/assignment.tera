@@ -1,20 +1,24 @@
-{% assign name = 'freestyle' %}
+{% set name = 'freestyle' %}
 
-{% for t in collections.tags %}{% if t == name %}
+{% for t in collections.tags %}
+  {% if t == name %}
   <p>Freestyle!</p>
-{% endif %}{% endfor %}
+  {% endif %}
+{% endfor %}
 
-{% assign freestyle = false %}
+{% set freestyle = false %}
 
-{% for t in collections.tags %}{% if t == 'freestyle' %}
-  {% assign freestyle = true %}
-{% endif %}{% endfor %}
+{% for t in collections.tags %}
+  {% if t == 'freestyle' %}
+    {% set freestyle = true %}
+  {% endif %}
+{% endfor %}
 
 {% if freestyle %}
   <p>Freestyle!</p>
 {% endif %}
 
-{% capture attribute_name %}{{ item.title | handleize }}-{{ i }}-color{% endcapture %}
+{% set attribute_name = {{item.title | handleize}} - i - color %}
 
   <label for="{{ attribute_name }}">Color:</label>
   <select name="attributes[{{ attribute_name }}]" id="{{ attribute_name }}">

@@ -1,0 +1,7 @@
+{# Tera comes with easy to use whitespace control:
+   use {%- if you want to remove all whitespace before a statement
+   and -%} if you want to remove all whitespace after. #}
+{# If we want to get rid of the empty line, we can write the following: #}
+
+{% set my_var = 2 -%}
+{{ my_var }}

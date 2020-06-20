@@ -1,0 +1,21 @@
+{# --- If --- #}
+
+{# Conditionals are fully supported and are identical to the ones in Python. #}
+
+{% if price < 10 or always_show %}
+   Price is {{ price }}.
+{% elif price > 1000 and not rich %}
+   That's expensive!
+{% else %}
+    N/A
+{% endif %}
+
+{# Undefined variables are considered falsy. This means that you can test for the presence of a variable in the current context by writing: #}
+
+{% if my_var %}
+    {{ my_var }}
+{% else %}
+    Sorry, my_var isn't defined.
+{% endif %}
+
+{# Every if statement has to end with an endif tag. #}

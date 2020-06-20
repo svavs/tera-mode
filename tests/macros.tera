@@ -1,0 +1,31 @@
+{# Think of macros as functions or components that you can call and return some text. Macros currently need to be defined in a separate file and imported to be useable. #}
+
+{# They are defined as follows: #}
+
+{% macro input(label, type="text") %}
+    <label>
+        {{ label }}
+        <input type="{{type}}" />
+    </label>
+{% endmacro input %}
+
+{# As shown in the example above, macro arguments can have a default literal value. #}
+
+{# In order to use them, you need to import the file containing the macros: #}
+
+{% import "macros.html" as macros %}
+
+{# You can name that file namespace (macros in the example) anything you want. A macro is called like this: #}
+
+// namespace::macro_name(**kwargs)
+{{ macros::input(label="Name", type="text") }}
+
+{# Do note that macros, like filters, require keyword arguments. If you are trying to call a macro defined in the same file or itself, you will need to use the self namespace. The self namespace can only be used in macros. Macros can be called recursively but there is no limit to recursion so make sure your macro ends. #}
+
+{# Here's an example of a recursive macro: #}
+
+{% macro factorial(n) %}
+  {% if n > 1 %}{{ n }} - {{ self::factorial(n=n-1) }}{% else %}1{% endif %}
+{% endmacro factorial %}
+
+{# Macros body can contain all normal Tera syntax with the exception of macros definition, block and extends. #}
