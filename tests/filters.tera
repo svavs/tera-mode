@@ -1,6 +1,9 @@
 {# You can modify variables using filters. Filters are separated from the variable by a pipe symbol (|) and may have named arguments in parentheses. Multiple filters can be chained: the output of one filter is applied to the next. #}
 
-{# For example, {{ name | lower | replace(from="doctor", to="Dr.") }} will take a variable called name, make it lowercase and then replace instances of doctor by Dr.. It is equivalent to replace(lower(name), from="doctor", to="Dr.") if we were to look at it as functions. #}
+{# For example, #}
+{{ name | lower | replace(from="doctor", to="Dr.") }}
+{# will take a variable called name, make it lowercase and then replace instances of doctor by Dr..
+It is equivalent to replace(lower(name), from="doctor", to="Dr.") if we were to look at it as functions. #}
 
 {# Calling filters on a incorrect type like trying to capitalize an array or using invalid types for arguments will result in a error. #}
 
