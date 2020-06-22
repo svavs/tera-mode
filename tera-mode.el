@@ -63,6 +63,11 @@
      ( ,(rx (or "{{" "}}")) (0 font-lock-type-face t))
      ( ,(rx "{#" (* whitespace) (group (*? anything)) (* whitespace) "#}") (1 font-lock-comment-face t))
      ( ,(rx (or "{#" "#}")) (0 font-lock-comment-delimiter-face t))
+     ( ,(rx "{{" (* whitespace) (group (*? anything))
+            (* "|" (* whitespace) (*? anything)) (* whitespace) "}}") (1 font-lock-variable-name-face t))
+     ( ,(rx  (group "|" (* whitespace)) (group (+ word))) (1 font-lock-keyword-face t) (2 font-lock-warning-face t))
+     ;; ( ,(rx-to-string `(and (group "|" (* whitespace)) (group ,(append '(or) (builtin-functions-keywords))))) (1 font-lock-keyword-face t) (2 font-lock-function-name-face t))
+     ;; ( ,(rx-to-string `(and word-start ,(append '(or) (constructs-keywords)) word-end)) (0 font-lock-builtin-face))
      )))
 
 ;;;
