@@ -45,7 +45,7 @@
 (defvar builtin-functions-keywords
   '("range" "now" "throw" "get_random" "get_env"))
 
-;;; default level
+;;; default font lock 
 (defvar tera-font-lock-keywords
   `((
      ( ,(regexp-opt expr-delimiters 'words) . font-lock-comment-face)
@@ -59,33 +59,11 @@
      ( ,(regexp-opt builtin-filters-keywords 'words) . font-lock-builtin-face)
      ( ,(regexp-opt builtin-tests-keywords 'words) . font-lock-builtin-face)
      ( ,(regexp-opt builtin-functions-keywords 'words) . font-lock-builtin-face)
+     ( ,(rx (or "{%" "%}" "{%-" "-%}")) (0 font-lock-function-name-face t))
+     ( ,(rx (or "{{" "}}")) (0 font-lock-type-face t))
+     ( ,(rx "{#" (* whitespace) (group (*? anything)) (* whitespace) "#}") (1 font-lock-comment-face t))
+     ( ,(rx (or "{#" "#}")) (0 font-lock-comment-delimiter-face t))
      )))
-
-;;;
-;;; Indentation
-;;;
-;; (defun tera-indent-line ()
-;;   "Indent current line as Tera code"
-;;   (interactive)  ;; allows to call the function directly with M-x
-;;   (beginning-of-line) ;; set the point to the beginning of the line
-;;   ;; check if is the first line in the buffer
-;;   (if (bobp)
-;;       (indent-line-to 0))
-;;   )
-
-;;;
-;;; Syntax table
-;;;
-(defvar tera-mode-syntax-table
-  (let ((st (make-syntax-table)))
-    (modify-syntax-entry ?{ "( 12" st)  ;; open parenthesis {{
-    (modify-syntax-entry ?} "( 34" st)  ;; close parenthesis }}
-    (modify-syntax-entry ?% "( 23b" st)  ;; close parenthesis {% %}
-    (modify-syntax-entry ?# "! 23b" st)  ;; comment delimiter {# #}
-    (modify-syntax-entry ?~ "_" st)  ;; string concatenation
-    (modify-syntax-entry ?- "_" st)  ;; remove whitespaces {%- -%}
-    st)
-  "Syntax table for tera-mode")
 
 ;;;
 ;;; Entry function
@@ -93,12 +71,24 @@
 ;; the entry function can be simplified by deriving tera-mode from html-mode
 (define-derived-mode tera-mode html-mode "Tera"
   "Major mode for editing Tera Template Language files."
-  ;; (set (make-local-variable 'font-lock-defaults) '(tera-font-lock-keywords))
+  ;;;
+  ;;; Default font lock
+  ;;(set (make-local-variable 'font-lock-defaults) '(tera-font-lock-keywords))
   (setq font-lock-defaults tera-font-lock-keywords)
-  ;; (set (make-local-variable 'indent-line-function) 'tera-indent-line)
+  ;;;
+  ;;; Indentation
+  ;;(set (make-local-variable 'indent-line-function) 'tera-indent-line)
+  ;;;
+  ;;; Syntax table
+  ;;(set-syntax-table tera-mode-syntax-table)
+  ;; (modify-syntax-entry ?{ "( 12" tera-mode-syntax-table)   ;; open parenthesis {{
+  ;; (modify-syntax-entry ?} "( 34" tera-mode-syntax-table)   ;; close parenthesis }}
+  ;; (modify-syntax-entry ?% "( 23b" tera-mode-syntax-table)  ;; close parenthesis {% %}
+  ;; (modify-syntax-entry ?# "! 23b" tera-mode-syntax-table)  ;; comment delimiter {# #}
+  ;; (modify-syntax-entry ?~ "_" tera-mode-syntax-table)      ;; string concatenation
+  ;; (modify-syntax-entry ?- "_" tera-mode-syntax-table)      ;; remove whitespaces {%- -%}
   (setq comment-start "{#")
   (setq comment-end "#}")
-  (set-syntax-table tera-mode-syntax-table)
   )
 
 ;;;
