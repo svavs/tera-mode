@@ -1,5 +1,3 @@
-(defvar tera-mode-hook nil)
-
 ;;; keymap
 ;; (defvar tera-mode-map
 ;;   (let ((map (make-keymap)))
@@ -7,72 +5,61 @@
 ;;     map)
 ;;   "Keymap for Tera major mode")
 
-;;; autoload
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.tera\\'" . tera-mode))
 
 ;;;
 ;;; sintax highlight
 ;;;
 ;; level 1
-(defconst tera-font-lock-keywords-delimiters
-  (list
-   '(((regexp-opt '("{%" "%}" "{{" "}}" "{%-}" "-%}")) t) . font-lock-comment-face))
-  "Minimal highlighting expressions for Tera mode")
+(defvar expr-delimiters
+  '("{%" "%}" "{{" "}}" "{%-}" "-%}"))
 
-;; level 2
-(defconst tera-font-lock-keywords-comments
-  (append tera-font-lock-keywords-delimiters (list '(((regexp-opt '("{#" "#}")) t) . font-lock-comment-delimiter-face)))
-  "Comments highlighting in Tera mode")
+(defvar comment-delimiters
+  '("{#" "#}"))
 
-;; level 3
-(defconst tera-font-lock-keywords-string-concatenation
-  (append tera-font-lock-keywords-comments (list '(((regexp-opt '("~")) t) . font-lock-keyword-face)))
-  "String concatenation highlighting in Tera mode")
+(defvar string-concat
+  '("~"))
 
-;; level 4
-(defconst tera-font-lock-keywords-in-checking
-  (append tera-font-lock-keywords-string-concatenation (list '(((regexp-opt '("in" "not") t) . font-lock-keyword-face))))
-  "In checking highlighting in Tera mode")
+(defvar in-checking
+  '("in" "not"))
 
-;; level 5
-(defconst tera-font-lock-keywords-logic
-  (append tera-font-lock-keywords-in-checking (list '(((regexp-opt '("and" "or" "not") t) . font-lock-variable-name-face))))
-  "Logic highlighting in Tera mode")
+(defvar logic-keywords
+  '("and" "or" "not"))
 
-;; level 6
-(defconst tera-font-lock-keywords-tests
-  (append tera-font-lock-keywords-logic (list '((regexp-opt '("is" "not") t) . font-lock-variable-name-face)))
-  "Tests highlighting in Tera mode")
+(defvar tests-keywords
+  '("is" "not"))
 
-;; level 7
-(defconst tera-font-lock-keywords-loop-variables
-  (append tera-font-lock-keywords-tests (list '(((regexp-opt '("loop." "index" "index0" "first" "last") t) . font-lock-variable-name-face))))
-  "Loop variables highlighting in Tera mode")
+(defvar loop-keywords
+  '("loop." "index" "index0" "first" "last"))
 
-;; level 8
-(defconst tera-font-lock-keywords-constructs
-  (append tera-font-lock-keywords-loop-variables (list '(((regexp-opt '("raw" "endraw" "set"  "set_global" "filter" "endfilter" "block" "endblock" "if" "endif" "elif" "else" "for" "endfor" "break" "continue" "include" "macro" "endmacro" "import" "extends") t) . font-lock-keyword-face))))
-  "Constructs highlighting in Tera mode")
+(defvar construct-keywords
+  '("raw" "endraw" "set"  "set_global" "filter" "endfilter" "block" "endblock" "if" "endif" "elif" "else" "for" "endfor" "break" "continue" "include" "macro" "endmacro" "import" "extends"))
 
-;; level 9
-(defconst tera-font-lock-keywords-builtin-filters
-  (append tera-font-lock-keywords-constructs (list '(((regexp-opt '("lower" "wordcount" "capitalize" "replace" "addshashes" "slugify" "title" "trim" "trim_start" "trim_end" "trim_start_matches" "trim_end_matches" "truncate" "striptags" "first" "last" "nth" "join" "length" "reverse" "sort" "unique" "slice" "group_by" "filter" "map" "concat" "urlencode" "urlencode_strict" "pluralize" "round" "filesizeformat" "date" "escape" "escape_xml" "safe" "get" "split" "int" "float" "json_encode" "as_str" "default") t) . font-lock-builtin-face))))
-  "Builtin filters highlighting in Tera mode")
+(defvar builtin-filters-keywords
+  '("lower" "wordcount" "capitalize" "replace" "addshashes" "slugify" "title" "trim" "trim_start" "trim_end" "trim_start_matches" "trim_end_matches" "truncate" "striptags" "first" "last" "nth" "join" "length" "reverse" "sort" "unique" "slice" "group_by" "filter" "map" "concat" "urlencode" "urlencode_strict" "pluralize" "round" "filesizeformat" "date" "escape" "escape_xml" "safe" "get" "split" "int" "float" "json_encode" "as_str" "default"))
 
-;; level 10
-(defconst tera-font-lock-keywords-builtin-tests
-  (append tera-font-lock-keywords-builtin-filters (list '(((regexp-opt '("defined" "undefined" "odd" "even" "string" "number" "divisibleby" "iterable" "object" "starting_with" "ending_with" "containing" "matching")) t) . font-lock-builtin-face)))
-  "Builtin tests highlighting in Tera mode")
+(defvar builtin-tests-keywords
+  '("defined" "undefined" "odd" "even" "string" "number" "divisibleby" "iterable" "object" "starting_with" "ending_with" "containing" "matching"))
 
-;; level 11
-(defconst tera-font-lock-keywords-builtin-functions
-  (append tera-font-lock-keywords-builtin-tests (list '(((regexp-opt '("range" "now" "throw" "get_random" "get_env")) t) . font-lock-builtin-face)))
-  "Builtin functions highlighting in Tera mode")
+(defvar builtin-functions-keywords
+  '("range" "now" "throw" "get_random" "get_env"))
 
-;;; define the default level of highlighting to be maximum
-(defvar tera-font-lock-keywords tera-font-lock-keywords-builtin-functions
-  "Default highlighting expressions for Tera mode")
-;;; ---------------------
+;;; default level
+(defvar tera-font-lock-keywords
+  `((
+     ( ,(regexp-opt expr-delimiters 'words) . font-lock-comment-face)
+     ( ,(regexp-opt comment-delimiters 'words) . font-lock-comment-delimiter-face)
+     ( ,(regexp-opt string-concat 'words) . font-lock-keyword-face)
+     ( ,(regexp-opt in-checking 'words) . font-lock-keyword-face)
+     ( ,(regexp-opt logic-keywords 'words) . font-lock-keyword-face)
+     ( ,(regexp-opt tests-keywords 'words) . font-lock-keyword-face)
+     ( ,(regexp-opt loop-keywords 'words) . font-lock-variable-name-face)
+     ( ,(regexp-opt construct-keywords 'words) . font-lock-keyword-face)
+     ( ,(regexp-opt builtin-filters-keywords 'words) . font-lock-builtin-face)
+     ( ,(regexp-opt builtin-tests-keywords 'words) . font-lock-builtin-face)
+     ( ,(regexp-opt builtin-functions-keywords 'words) . font-lock-builtin-face)
+     )))
 
 ;;;
 ;;; Indentation
@@ -103,25 +90,16 @@
 ;;;
 ;;; Entry function
 ;;;
-(defun tera-mode()
-  "Major mode for editing Tera Template Language files"
-  (interactive)
-  (kill-all-local-variables)
-  (set-syntax-table tera-mode-syntax-table)
-  ;;(use-local-map tera-mode-map)
-  (set (make-local-variable 'font-lock-defaults) '(tera-font-lock-keywords))
-  ;;(set (make-local-variable 'indent-line-function) 'tera-indent-line)
-  (setq major-mode 'tera-mode)
-  (setq mode-name "Tera")
-  (run-hooks 'tera-mode-hook)
-  )
-
 ;; the entry function can be simplified by deriving tera-mode from html-mode
-;; (define-derived-mode tera-mode html-mode "Tera"
-;;   "Major mode for editing Tera Template Language files."
-;;   (set (make-local-variable 'font-lock-defaults) '(tera-font-lock-keywords))
-;;   (set (make-local-variable 'indent-line-function) 'tera-indent-line)
-;;   )
+(define-derived-mode tera-mode html-mode "Tera"
+  "Major mode for editing Tera Template Language files."
+  ;; (set (make-local-variable 'font-lock-defaults) '(tera-font-lock-keywords))
+  (setq font-lock-defaults tera-font-lock-keywords)
+  ;; (set (make-local-variable 'indent-line-function) 'tera-indent-line)
+  (setq comment-start "{#")
+  (setq comment-end "#}")
+  (set-syntax-table tera-mode-syntax-table)
+  )
 
 ;;;
 ;;; Provide the mode
