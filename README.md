@@ -33,7 +33,7 @@ To add this mode in Spacemacs, simply add this code to the dotfile under the `do
 If you followed the above you are just a couple of steps away from
 contributing to `tera-mode`.
 
-`tera-mode` is actively seeking contributions from users of `tera`-mode`. 
-For more information have a look at [the wiki page on contributing](https://github.com/svavs/tera-mode/wiki/Contributing).
+This is the first time I wrote an Emacs mode, hence `tera-mode` is actively seeking contributions from users of `tera-mode`. 
+If you have some contributions, you can fork this repo and request a merge, it'll be really appreciated.
 
 
