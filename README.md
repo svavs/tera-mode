@@ -1,7 +1,7 @@
 Tera Mode for Emacs
 ======================
 
-This is an Emacs mode for editing with the [Tera template language](https:://tera.netlify.app).
+This is an Emacs mode for editing with the [Tera template language](https://tera.netlify.app).
 
 [![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg)](https://github.com/svavs/tera-mode/blob/master/LICENSE.txt)
 
