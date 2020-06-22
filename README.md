@@ -3,7 +3,6 @@ Tera Mode for Emacs
 
 This is an Emacs mode for editing with the Tera template language. [Home page](http://svavs.github.io/tera-mode/).
 
-[![Build Status](https://travis-ci.org/svavs/tera-mode.svg?branch=master)](https://travis-ci.org/svavs/tera-mode)
 [![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg)](https://github.com/svavs/tera-mode/blob/master/LICENSE.txt)
 
 
