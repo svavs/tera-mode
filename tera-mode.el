@@ -45,7 +45,7 @@
 (defvar builtin-functions-keywords
   '("range" "now" "throw" "get_random" "get_env"))
 
-;;; default font lock 
+;;; default font lock
 (defvar tera-font-lock-keywords
   `((
      ( ,(regexp-opt expr-delimiters 'words) . font-lock-comment-face)
