@@ -4,6 +4,9 @@ This is an Emacs mode for editing with the [Tera template language](https://tera
 
 [![License GPL3](https://img.shields.io/badge/license-GPL3-blue.svg)](https://github.com/svavs/tera-mode/blob/master/LICENSE.txt)
 
+The mode is not offering complete support in special circumstances (nested code, custom macros, etc), but is ready for the most use cases.
+The `tera-mode` is automatically enabled when opening a file having the `.tera` extension. Instead, when opening an HTML file containing Tera code, is possible to enable the `tera-mode` with `M-x tera-mode`.
+
 ## Quick Installation
 
 This mode is designed having the Spacemacs configuration in mind, but should work without problems on vanilla Emacs.
@@ -41,7 +44,7 @@ To add tera-mode in Doom Emacs, add the following code to the dedicated files:
   (require 'tera-mode)
 ```
 
-After that, running `doom sync` will automatically download the `tera mode`. When opening an html file containing Tera code, enable the tera-mode with `M-x tera-mode`.
+After that, running `doom sync` will automatically download and enable the `tera mode`.
 
 ## Contributing
 
